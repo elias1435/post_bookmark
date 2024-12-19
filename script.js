@@ -1,17 +1,26 @@
 // Save for Later button
 document.addEventListener("DOMContentLoaded", () => {
     const bookmarkButton = document.getElementById("bookmark");
+    const savedPostButton = document.getElementById("saved-post");
     const currentUrl = window.location.href;
     const currentTitle = document.title;
 
     // Retrieve bookmarks from localStorage
     let bookmarks = JSON.parse(localStorage.getItem("bookmarkedUrls")) || [];
 
+    // Initial visibility check for the saved post button
+    if (bookmarks.length === 0) {
+        savedPostButton.style.display = "none";
+    } else {
+        savedPostButton.style.display = "block";
+    }
+
     // Check if the current page is already bookmarked
     if (bookmarks.some(bookmark => bookmark.url === currentUrl)) {
         bookmarkButton.querySelector(".elementor-button-text").textContent = "Bookmarked";
     }
 
+    // Handle the bookmarking process
     bookmarkButton.addEventListener("click", (event) => {
         event.preventDefault();
 
@@ -20,10 +29,12 @@ document.addEventListener("DOMContentLoaded", () => {
             bookmarks.push({ title: currentTitle, url: currentUrl });
             localStorage.setItem("bookmarkedUrls", JSON.stringify(bookmarks));
             bookmarkButton.querySelector(".elementor-button-text").textContent = "Bookmarked";
+
+            // Make the saved-post button visible immediately
+            savedPostButton.style.display = "block";
         }
     });
 });
-
 
 
 
